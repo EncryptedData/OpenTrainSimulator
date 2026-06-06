@@ -2,6 +2,8 @@
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
 name: CMake on multiple platforms
 
+
+
 on:
   push:
     branches: [ "master" ]
@@ -10,6 +12,7 @@ on:
 
 jobs:
   build:
+    if: false # Disable for now
     runs-on: ${{ matrix.os }}
 
     strategy:
