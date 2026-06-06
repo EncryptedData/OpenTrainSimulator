@@ -4,7 +4,7 @@ function(setup_common_target_flags target)
 
     target_compile_features(${target} PRIVATE cxx_std_17)
 
-    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
+    if(MSVC)
         set(CFLAGS /W4 /WX)
     else()
         set(CFLAGS -Wall -Wextra -Werror)
