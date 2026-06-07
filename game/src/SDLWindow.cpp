@@ -1,7 +1,10 @@
 #include "SDLWindow.h"
 
 #include <exception>
+#include <stdexcept>
 #include <SDL3/SDL.h>
+
+#include "SDL3/SDL_vulkan.h"
 
 SDLWindow::SDLWindow() :
     _shouldContinue{true}
@@ -39,6 +42,28 @@ void SDLWindow::Update()
 bool SDLWindow::GetShouldContinue() const
 {
     return _shouldContinue;
+}
+
+void SDLWindow::GetRequiredVulkanExtensions(std::vector<std::string> &layers) const
+{
+    Uint32 requestExtensionsCount;
+    auto requestedInstanceExtensions = SDL_Vulkan_GetInstanceExtensions(&requestExtensionsCount);
+
+    for (Uint32 i = 0; i < requestExtensionsCount; i++)
+    {
+        layers.emplace_back(requestedInstanceExtensions[i]);
+    }
+}
+
+std::function<void(VkInstance, VkSurfaceKHR*)> SDLWindow::GetSurfaceFactory() const
+{
+    return [&](VkInstance instance, VkSurfaceKHR* surface)
+    {
+        if (!SDL_Vulkan_CreateSurface(_window, instance, nullptr, surface))
+        {
+            throw std::runtime_error("SDL failed to create surface");
+        }
+    };
 }
 
 SDLWindow::~SDLWindow()
