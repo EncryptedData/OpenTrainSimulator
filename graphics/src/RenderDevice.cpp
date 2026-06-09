@@ -133,8 +133,8 @@ namespace OpenTrainSimulator::Graphics
             .set_app_name("OpenTrainSimulator")
             .set_engine_name("OpenTrainSimulator")
             .set_engine_version(0,0,1)
-            .enable_extension(VK_KHR_SWAPCHAIN_EXTENSION_NAME)
-            .enable_extension(VK_EXT_SHADER_OBJECT_EXTENSION_NAME)
+            //.enable_extension(VK_KHR_SWAPCHAIN_EXTENSION_NAME)
+            //.enable_extension(VK_EXT_SHADER_OBJECT_EXTENSION_NAME)
             .request_validation_layers()
             .use_default_debug_messenger()
             .build();

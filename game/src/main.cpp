@@ -15,9 +15,22 @@ int main()
     window.GetRequiredVulkanExtensions(requiredSDLVulkanLayers);
     OpenTrainSimulator::Graphics::RenderDevice renderDevice{window.GetSurfaceFactory(), requiredSDLVulkanLayers, windowWidth, windowHeight};
 
+    ImguiRenderer imguiRenderer{window, renderDevice};
+
     while (window.GetShouldContinue())
     {
         window.Update();
+        window.GetWindowSize(windowWidth, windowHeight);
+
+        renderDevice.BeginFrame(windowWidth, windowHeight);
+
+        imguiRenderer.BeginFrame();
+
+        imguiRenderer.Render();
+
+        imguiRenderer.EndFrame();
+
+        renderDevice.EndFrame();
     }
 
     return 0;
