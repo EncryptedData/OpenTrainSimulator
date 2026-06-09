@@ -7,20 +7,22 @@
 #include "SDL3/SDL_vulkan.h"
 
 SDLWindow::SDLWindow() :
-    _shouldContinue{true}
+    _shouldContinue{true},
+    _windowWidth{1280},
+    _windowHeight{720}
 {
     int result = SDL_Init(SDL_INIT_VIDEO);
     if (result < 0)
     {
-        throw std::exception();
+        throw std::runtime_error("SDL_Init returned failure");
     }
 
     const SDL_WindowFlags windowFlags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_RESIZABLE | SDL_WINDOW_VULKAN;
-    _window = SDL_CreateWindow("OpenTrainSimulator", 1280, 720, windowFlags);
+    _window = SDL_CreateWindow("OpenTrainSimulator", _windowWidth, _windowHeight, windowFlags);
 
     if (!_window)
     {
-        throw std::exception();
+        throw std::runtime_error("Failed to create SDL Window");
     }
 
     SDL_SetWindowPosition(_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
@@ -32,9 +34,20 @@ void SDLWindow::Update()
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        if (event.type == SDL_EVENT_QUIT)
+        switch (event.type)
         {
-            _shouldContinue = false;
+            case SDL_EVENT_QUIT:
+            {
+                _shouldContinue = false;
+                break;
+            }
+            case SDL_EVENT_WINDOW_RESIZED:
+            {
+                _windowWidth = event.window.data1;
+                _windowHeight = event.window.data2;
+                break;
+            }
+            default: break;
         }
     }
 }
@@ -64,6 +77,17 @@ std::function<void(VkInstance, VkSurfaceKHR*)> SDLWindow::GetSurfaceFactory() co
             throw std::runtime_error("SDL failed to create surface");
         }
     };
+}
+
+SDL_Window * SDLWindow::GetWindow() const
+{
+    return _window;
+}
+
+void SDLWindow::GetWindowSize(int &width, int &height) const
+{
+    width = _windowWidth;
+    height = _windowHeight;
 }
 
 SDLWindow::~SDLWindow()

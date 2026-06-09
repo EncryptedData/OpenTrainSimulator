@@ -20,7 +20,13 @@ public:
 
     [[nodiscard]] std::function<void(VkInstance, VkSurfaceKHR*)> GetSurfaceFactory() const;
 
+    SDL_Window* GetWindow() const;
+
+    void GetWindowSize(int& width, int& height) const;
+
 private:
     SDL_Window* _window;
     bool _shouldContinue;
+    int _windowWidth;
+    int _windowHeight;
 };
