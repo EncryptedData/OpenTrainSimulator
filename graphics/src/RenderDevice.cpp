@@ -14,6 +14,7 @@ namespace OpenTrainSimulator::Graphics
     {
         InitVulkan(buildSurface, requiredExtensions);
         InitSwapChain();
+        InitCommandPool();
     }
 
     RenderDevice::~RenderDevice()
@@ -133,8 +134,6 @@ namespace OpenTrainSimulator::Graphics
             .set_app_name("OpenTrainSimulator")
             .set_engine_name("OpenTrainSimulator")
             .set_engine_version(0,0,1)
-            //.enable_extension(VK_KHR_SWAPCHAIN_EXTENSION_NAME)
-            //.enable_extension(VK_EXT_SHADER_OBJECT_EXTENSION_NAME)
             .request_validation_layers()
             .use_default_debug_messenger()
             .build();
@@ -152,7 +151,9 @@ namespace OpenTrainSimulator::Graphics
         vkb::PhysicalDeviceSelector selector{vkbInstance};
         auto selectorResult = selector
             .set_surface(_surface)
-            .set_minimum_version(1, 1)
+            .set_minimum_version(1, 3)
+            .add_required_extension(VK_KHR_SWAPCHAIN_EXTENSION_NAME)
+            .add_required_extension(VK_EXT_SHADER_OBJECT_EXTENSION_NAME)
             .select();
 
         if (!selectorResult)
@@ -164,7 +165,9 @@ namespace OpenTrainSimulator::Graphics
         _physicalDevice = vkbPhysicalDevice.physical_device;
 
         vkb::DeviceBuilder deviceBuilder{vkbPhysicalDevice};
-        auto deviceBuilderResult = deviceBuilder.build();
+        auto deviceBuilderResult = deviceBuilder
+            
+        .build();
 
         if (!deviceBuilderResult)
         {
