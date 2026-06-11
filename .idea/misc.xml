@@ -8,6 +8,7 @@
     <sourceRoots>
       <file path="$PROJECT_DIR$/game/include" />
       <file path="$PROJECT_DIR$/graphics/include" />
+      <file path="$PROJECT_DIR$/tests/src" />
     </sourceRoots>
   </component>
 </project>
