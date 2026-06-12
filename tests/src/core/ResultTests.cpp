@@ -17,6 +17,14 @@ TEST_CASE("Result constructed with value should return the value")
     REQUIRE(result.value() == 0);
 }
 
+TEST_CASE("Result can be used in if statement")
+{
+    OpenTrainSimulator::Result<int> result(0);
+
+    REQUIRE(result);
+    REQUIRE(!result == false);
+}
+
 TEST_CASE("Result can be constructed with non-builtin types")
 {
     struct Data
