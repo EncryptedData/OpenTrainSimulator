@@ -1,6 +1,7 @@
 [workspace]
 members = [
-    "core"
+    "engine",
+    "game"
 ]
 
 resolver = "3"
